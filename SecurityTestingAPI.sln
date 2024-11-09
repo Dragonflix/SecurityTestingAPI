@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityTestingAPI", "SecurityTestingAPI\SecurityTestingAPI.csproj", "{A59011E9-E40D-46D8-889C-D2F892B8974B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityTestingAPI", "SecurityTestingAPI\SecurityTestingAPI.csproj", "{A59011E9-E40D-46D8-889C-D2F892B8974B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{0E0202FA-51AD-4E4C-9E2F-2E2A29EAFAF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{D80AF49E-7A4B-40D4-8952-95F031F5721C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{A59011E9-E40D-46D8-889C-D2F892B8974B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A59011E9-E40D-46D8-889C-D2F892B8974B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A59011E9-E40D-46D8-889C-D2F892B8974B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0202FA-51AD-4E4C-9E2F-2E2A29EAFAF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0202FA-51AD-4E4C-9E2F-2E2A29EAFAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0202FA-51AD-4E4C-9E2F-2E2A29EAFAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0202FA-51AD-4E4C-9E2F-2E2A29EAFAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D80AF49E-7A4B-40D4-8952-95F031F5721C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D80AF49E-7A4B-40D4-8952-95F031F5721C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D80AF49E-7A4B-40D4-8952-95F031F5721C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D80AF49E-7A4B-40D4-8952-95F031F5721C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using BLL.DTO;
+using BLL.Services;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SecurityTestingAPI;
-using SecurityTestingAPI.DTO;
-using SecurityTestingAPI.Models;
 
 namespace SecurityTestingAPI.Controllers
 {
@@ -17,13 +12,11 @@ namespace SecurityTestingAPI.Controllers
     [ApiController]
     public class TestTasksController : ControllerBase
     {
-        private readonly TestingDBContext _context;
-        private readonly IMapper _mapper;
+        private readonly TestTaskService _service;
 
-        public TestTasksController(TestingDBContext context, IMapper mapper)
+        public TestTasksController(TestTaskService service)
         {
-            _context = context;
-            _mapper = mapper;
+            _service = service;
         }
 
         // GET: api/TestTasks
@@ -31,21 +24,14 @@ namespace SecurityTestingAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TestTaskDTO>>> GetTestTasks()
         {
-            return await _context.TestTasks.Select(tt => _mapper.Map<TestTaskDTO>(tt)).ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/TestTasks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TestTaskDTO>> GetTestTask(Guid id)
         {
-            var testTask = await _context.TestTasks.FindAsync(id);
-
-            if (testTask == null)
-            {
-                return NotFound();
-            }
-
-            return _mapper.Map<TestTaskDTO>(testTask);
+            return Ok(await _service.GetOneAsync(id));
         }
 
         // PUT: api/TestTasks/5
@@ -59,23 +45,7 @@ namespace SecurityTestingAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(_mapper.Map<TestTask>(testTask)).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TestTaskExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _service.UpdateAsync(testTask);
 
             return NoContent();
         }
@@ -86,8 +56,7 @@ namespace SecurityTestingAPI.Controllers
         [Authorize(Roles = "Moderator")]
         public async Task<ActionResult<TestTaskDTO>> PostTestTask(TestTaskDTO testTask)
         {
-            _context.TestTasks.Add(_mapper.Map<TestTask>(testTask));
-            await _context.SaveChangesAsync();
+            await _service.CreateAsync(testTask);
 
             return CreatedAtAction("GetTestTask", new { id = testTask.Id }, testTask);
         }
@@ -96,21 +65,9 @@ namespace SecurityTestingAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTestTask(Guid id)
         {
-            var testTask = await _context.TestTasks.FindAsync(id);
-            if (testTask == null)
-            {
-                return NotFound();
-            }
-
-            _context.TestTasks.Remove(testTask);
-            await _context.SaveChangesAsync();
+            await _service.RemoveAsync(id);
 
             return NoContent();
-        }
-
-        private bool TestTaskExists(Guid id)
-        {
-            return _context.TestTasks.Any(e => e.Id == id);
         }
     }
 }

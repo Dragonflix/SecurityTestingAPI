@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using SecurityTestingAPI.Models;
+using DAL.Models;
 
-namespace SecurityTestingAPI
+namespace DAL
 {
     public class TestingDBContext: DbContext
     {
@@ -41,7 +40,7 @@ namespace SecurityTestingAPI
             modelBuilder.Entity<TestTask>()
                 .HasKey(e => e.Id);
             modelBuilder.Entity<CompletedTask>()
-                .HasKey(e => new {e.UserId, e.TaskId});
+                .HasKey(e => e.Id);
         }
     }
 }

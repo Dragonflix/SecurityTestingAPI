@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using BLL.DTO;
+using BLL.Services;
+using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SecurityTestingAPI;
-using SecurityTestingAPI.Models;
 
 namespace SecurityTestingAPI.Controllers
 {
@@ -14,61 +9,38 @@ namespace SecurityTestingAPI.Controllers
     [ApiController]
     public class TaskTypesController : ControllerBase
     {
-        private readonly TestingDBContext _context;
+        private readonly TaskTypeService _service;
 
-        public TaskTypesController(TestingDBContext context)
+        public TaskTypesController(TaskTypeService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/TaskTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskType>>> GetTaskTypes()
+        public async Task<ActionResult<IEnumerable<TaskTypeDTO>>> GetTaskTypes()
         {
-            return await _context.TaskTypes.ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/TaskTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskType>> GetTaskType(Guid id)
+        public async Task<ActionResult<TaskTypeDTO>> GetTaskType(Guid id)
         {
-            var taskType = await _context.TaskTypes.FindAsync(id);
-
-            if (taskType == null)
-            {
-                return NotFound();
-            }
-
-            return taskType;
+            return Ok(await _service.GetOneAsync(id));
         }
 
         // PUT: api/TaskTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTaskType(Guid id, TaskType taskType)
+        public async Task<IActionResult> PutTaskType(Guid id, TaskTypeDTO taskType)
         {
             if (id != taskType.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(taskType).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TaskTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _service.UpdateAsync(taskType);
 
             return NoContent();
         }
@@ -76,33 +48,20 @@ namespace SecurityTestingAPI.Controllers
         // POST: api/TaskTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TaskType>> PostTaskType(TaskType taskType)
+        public async Task<ActionResult<TaskTypeDTO>> PostTaskType(TaskTypeDTO taskType)
         {
-            _context.TaskTypes.Add(taskType);
-            await _context.SaveChangesAsync();
+            await _service.CreateAsync(taskType);
 
-            return CreatedAtAction("GetTaskType", new { id = taskType.Id }, taskType);
+            return CreatedAtAction("GetTestTask", new { id = taskType.Id }, taskType);
         }
 
         // DELETE: api/TaskTypes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTaskType(Guid id)
         {
-            var taskType = await _context.TaskTypes.FindAsync(id);
-            if (taskType == null)
-            {
-                return NotFound();
-            }
-
-            _context.TaskTypes.Remove(taskType);
-            await _context.SaveChangesAsync();
+            await _service.RemoveAsync(id);
 
             return NoContent();
-        }
-
-        private bool TaskTypeExists(Guid id)
-        {
-            return _context.TaskTypes.Any(e => e.Id == id);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using SecurityTestingAPI.Models;
+﻿using DAL.Models;
 
-namespace SecurityTestingAPI.DTO
+namespace BLL.DTO
 {
     public class TestTaskDTO
     {

@@ -1,16 +1,16 @@
-﻿namespace SecurityTestingAPI.Models
+﻿using DAL.Models;
+
+namespace BLL.DTO
 {
-    public class CompletedTask
+    public class CompletedTaskDTO
     {
+        public Guid Id { get; set; }
+
         public int Score { get; set; }
 
         public bool IsPassed { get; set; }
 
-        public TestTask Task { get; set; }
-
         public Guid TaskId { get; set; }
-
-        public User User { get; set; }
 
         public Guid UserId { get; set; }
     }

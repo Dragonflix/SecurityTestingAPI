@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using BLL.DTO;
+using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SecurityTestingAPI;
-using SecurityTestingAPI.Models;
 
 namespace SecurityTestingAPI.Controllers
 {
@@ -14,61 +8,38 @@ namespace SecurityTestingAPI.Controllers
     [ApiController]
     public class ComplexitiesController : ControllerBase
     {
-        private readonly TestingDBContext _context;
+        private readonly ComplexityService _service;
 
-        public ComplexitiesController(TestingDBContext context)
+        public ComplexitiesController(ComplexityService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/Complexities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Complexity>>> GetComplexities()
+        public async Task<ActionResult<IEnumerable<ComplexityDTO>>> GetComplexities()
         {
-            return await _context.Complexities.ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/Complexities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Complexity>> GetComplexity(Guid id)
+        public async Task<ActionResult<ComplexityDTO>> GetComplexity(Guid id)
         {
-            var complexity = await _context.Complexities.FindAsync(id);
-
-            if (complexity == null)
-            {
-                return NotFound();
-            }
-
-            return complexity;
+            return Ok(await _service.GetOneAsync(id));
         }
 
         // PUT: api/Complexities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComplexity(Guid id, Complexity complexity)
+        public async Task<IActionResult> PutComplexity(Guid id, ComplexityDTO complexity)
         {
             if (id != complexity.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(complexity).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ComplexityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _service.UpdateAsync(complexity);
 
             return NoContent();
         }
@@ -76,33 +47,20 @@ namespace SecurityTestingAPI.Controllers
         // POST: api/Complexities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Complexity>> PostComplexity(Complexity complexity)
+        public async Task<ActionResult<ComplexityDTO>> PostComplexity(ComplexityDTO complexity)
         {
-            _context.Complexities.Add(complexity);
-            await _context.SaveChangesAsync();
+            await _service.CreateAsync(complexity);
 
-            return CreatedAtAction("GetComplexity", new { id = complexity.Id }, complexity);
+            return CreatedAtAction("GetTestTask", new { id = complexity.Id }, complexity);
         }
 
         // DELETE: api/Complexities/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComplexity(Guid id)
         {
-            var complexity = await _context.Complexities.FindAsync(id);
-            if (complexity == null)
-            {
-                return NotFound();
-            }
-
-            _context.Complexities.Remove(complexity);
-            await _context.SaveChangesAsync();
+            await _service.RemoveAsync(id);
 
             return NoContent();
-        }
-
-        private bool ComplexityExists(Guid id)
-        {
-            return _context.Complexities.Any(e => e.Id == id);
         }
     }
 }

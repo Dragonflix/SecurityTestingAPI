@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using SecurityTestingAPI.DTO;
-using SecurityTestingAPI.Models;
+using BLL.DTO;
+using DAL.Models;
 
-namespace SecurityTestingAPI
+namespace BLL
 {
     public class MappingProfile: Profile
     {
@@ -10,12 +10,14 @@ namespace SecurityTestingAPI
         {
             CreateMap<User, UserDTO>()
                 .ForMember(dest => dest.Roles, opt => opt.MapFrom(e => e.Roles.Select(r => r.Id)));
-            CreateMap<Role, RoleDTO>()
-                .ReverseMap(); ;
+            CreateMap<Complexity, ComplexityDTO>()
+                .ReverseMap();
+            CreateMap<TaskType, TaskTypeDTO>()
+                .ReverseMap();
             CreateMap<TestTask, TestTaskDTO>()
-                .ReverseMap(); ;
+                .ReverseMap();
             CreateMap<CompletedTask, CompletedTaskDTO>()
-                .ReverseMap(); ;
+                .ReverseMap();
         }
     }
 }

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using BLL.DTO;
+using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SecurityTestingAPI;
-using SecurityTestingAPI.DTO;
-using SecurityTestingAPI.Models;
 
 namespace SecurityTestingAPI.Controllers
 {
@@ -16,34 +8,24 @@ namespace SecurityTestingAPI.Controllers
     [ApiController]
     public class CompletedTasksController : ControllerBase
     {
-        private readonly TestingDBContext _context;
-        private readonly IMapper _mapper;
-
-        public CompletedTasksController(TestingDBContext context, IMapper mapper)
+        private readonly CompletedTaskService _service;
+        public CompletedTasksController(CompletedTaskService service)
         {
-            _context = context;
-            _mapper = mapper;
+            _service = service;
         }
 
         // GET: api/CompletedTasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompletedTaskDTO>>> GetCompletedTasks()
         {
-            return await _context.CompletedTasks.Select(ct => _mapper.Map<CompletedTaskDTO>(ct)).ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/CompletedTasks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompletedTaskDTO>> GetCompletedTask(Guid id)
         {
-            var completedTask = await _context.CompletedTasks.FindAsync(id);
-
-            if (completedTask == null)
-            {
-                return NotFound();
-            }
-
-            return _mapper.Map<CompletedTaskDTO>(completedTask);
+            return Ok(await _service.GetOneAsync(id));
         }
 
         // PUT: api/CompletedTasks/5
@@ -51,28 +33,12 @@ namespace SecurityTestingAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompletedTask(Guid id, CompletedTaskDTO completedTask)
         {
-            if (id != completedTask.UserId)
+            if (id != completedTask.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(_mapper.Map<CompletedTask>(completedTask)).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CompletedTaskExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _service.UpdateAsync(completedTask);
 
             return NoContent();
         }
@@ -82,45 +48,18 @@ namespace SecurityTestingAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CompletedTaskDTO>> PostCompletedTask(CompletedTaskDTO completedTask)
         {
-            _context.CompletedTasks.Add(_mapper.Map<CompletedTask>(completedTask));
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CompletedTaskExists(completedTask.UserId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _service.CreateAsync(completedTask);
 
-            return CreatedAtAction("GetCompletedTask", new { id = completedTask.UserId }, completedTask);
+            return CreatedAtAction("GetTestTask", new { id = completedTask.Id }, completedTask);
         }
 
         // DELETE: api/CompletedTasks/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompletedTask(Guid id)
         {
-            var completedTask = await _context.CompletedTasks.FindAsync(id);
-            if (completedTask == null)
-            {
-                return NotFound();
-            }
-
-            _context.CompletedTasks.Remove(completedTask);
-            await _context.SaveChangesAsync();
+            await _service.RemoveAsync(id);
 
             return NoContent();
-        }
-
-        private bool CompletedTaskExists(Guid id)
-        {
-            return _context.CompletedTasks.Any(e => e.UserId == id);
         }
     }
 }

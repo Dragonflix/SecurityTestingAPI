@@ -5,6 +5,10 @@ using Microsoft.OpenApi.Models;
 using SecurityTestingAPI;
 using System.Configuration;
 using System.Text;
+using BLL;
+using DAL;
+using BLL.Services;
+using DAL.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +70,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
         };
     });
+
+builder.Services.AddScoped<UnitOfWork>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ComplexityService>();
+builder.Services.AddScoped<TestTaskService>();
+builder.Services.AddScoped<CompletedTaskService>();
+builder.Services.AddScoped<TaskTypeService>();
 
 var app = builder.Build();
 

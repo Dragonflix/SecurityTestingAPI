@@ -1,4 +1,4 @@
-﻿namespace SecurityTestingAPI.Models
+﻿namespace DAL.Models
 {
     public class TaskType
     {

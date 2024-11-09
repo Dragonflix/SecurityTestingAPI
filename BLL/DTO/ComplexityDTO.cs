@@ -1,6 +1,12 @@
-﻿namespace SecurityTestingAPI.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BLL.DTO
 {
-    public class Complexity
+    public class ComplexityDTO
     {
         public Guid Id { get; set; }
 
