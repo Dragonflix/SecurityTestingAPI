@@ -5,3 +5,5 @@
 /.vs
 /SecurityTestingAPI/bin/Debug/net8.0
 /SecurityTestingAPI/obj
+/BLL/obj
+/DAL/obj
