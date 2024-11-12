@@ -21,19 +21,19 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<ICollection<ComplexityDTO>> GetAllAsync()
+        public async Task<ICollection<ComplexityDto>> GetAllAsync()
         {
             var results = await _unitOfWork.ComplexityRepository.GetAllAsync();
-            return results.Select(_mapper.Map<ComplexityDTO>).ToList();
+            return results.Select(_mapper.Map<ComplexityDto>).ToList();
         }
 
-        public async Task<ComplexityDTO> GetOneAsync(Guid id)
+        public async Task<ComplexityDto> GetOneAsync(Guid id)
         {
             var result = await _unitOfWork.ComplexityRepository.GetOneAsync(id);
-            return _mapper.Map<ComplexityDTO>(result);
+            return _mapper.Map<ComplexityDto>(result);
         }
 
-        public async Task UpdateAsync(ComplexityDTO model)
+        public async Task UpdateAsync(ComplexityDto model)
         {
             await _unitOfWork.ComplexityRepository.UpdateAsync(_mapper.Map<Complexity>(model));
             await _unitOfWork.SaveAllAsync();
@@ -45,7 +45,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAllAsync();
         }
 
-        public async Task CreateAsync(ComplexityDTO model)
+        public async Task CreateAsync(ComplexityDto model)
         {
             await _unitOfWork.ComplexityRepository.CreateAsync(_mapper.Map<Complexity>(model));
             await _unitOfWork.SaveAllAsync();

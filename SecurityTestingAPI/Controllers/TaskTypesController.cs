@@ -18,14 +18,14 @@ namespace SecurityTestingAPI.Controllers
 
         // GET: api/TaskTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskTypeDTO>>> GetTaskTypes()
+        public async Task<ActionResult<IEnumerable<TaskTypeDto>>> GetTaskTypes()
         {
             return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/TaskTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskTypeDTO>> GetTaskType(Guid id)
+        public async Task<ActionResult<TaskTypeDto>> GetTaskType(Guid id)
         {
             return Ok(await _service.GetOneAsync(id));
         }
@@ -33,7 +33,7 @@ namespace SecurityTestingAPI.Controllers
         // PUT: api/TaskTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTaskType(Guid id, TaskTypeDTO taskType)
+        public async Task<IActionResult> PutTaskType(Guid id, TaskTypeDto taskType)
         {
             if (id != taskType.Id)
             {
@@ -48,7 +48,7 @@ namespace SecurityTestingAPI.Controllers
         // POST: api/TaskTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TaskTypeDTO>> PostTaskType(TaskTypeDTO taskType)
+        public async Task<ActionResult<TaskTypeDto>> PostTaskType(TaskTypeDto taskType)
         {
             await _service.CreateAsync(taskType);
 

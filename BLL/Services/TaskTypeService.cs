@@ -21,19 +21,19 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<ICollection<TaskTypeDTO>> GetAllAsync()
+        public async Task<ICollection<TaskTypeDto>> GetAllAsync()
         {
             var results = await _unitOfWork.TaskTypeRepository.GetAllAsync();
-            return results.Select(_mapper.Map<TaskTypeDTO>).ToList();
+            return results.Select(_mapper.Map<TaskTypeDto>).ToList();
         }
 
-        public async Task<TaskTypeDTO> GetOneAsync(Guid id)
+        public async Task<TaskTypeDto> GetOneAsync(Guid id)
         {
             var result = await _unitOfWork.TaskTypeRepository.GetOneAsync(id);
-            return _mapper.Map<TaskTypeDTO>(result);
+            return _mapper.Map<TaskTypeDto>(result);
         }
 
-        public async Task UpdateAsync(TaskTypeDTO model)
+        public async Task UpdateAsync(TaskTypeDto model)
         {
             await _unitOfWork.TaskTypeRepository.UpdateAsync(_mapper.Map<TaskType>(model));
             await _unitOfWork.SaveAllAsync();
@@ -45,7 +45,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAllAsync();
         }
 
-        public async Task CreateAsync(TaskTypeDTO model)
+        public async Task CreateAsync(TaskTypeDto model)
         {
             await _unitOfWork.TaskTypeRepository.CreateAsync(_mapper.Map<TaskType>(model));
             await _unitOfWork.SaveAllAsync();

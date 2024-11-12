@@ -2,7 +2,7 @@
 
 namespace BLL.DTO
 {
-    public class CompletedTaskDTO
+    public class CompletedTaskDto
     {
         public Guid Id { get; set; }
 

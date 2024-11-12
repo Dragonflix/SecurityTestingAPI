@@ -22,19 +22,24 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<ICollection<CompletedTaskDTO>> GetAllAsync()
+        public async Task<ICollection<CompletedTaskDto>> GetAllAsync()
         {
             var results = await _unitOfWork.CompletedTaskRepository.GetAllAsync();
-            return results.Select(_mapper.Map<CompletedTaskDTO>).ToList();
+            return results.Select(_mapper.Map<CompletedTaskDto>).ToList();
+        }
+        public async Task<ICollection<CompletedTaskDto>> GetByUserAsync(Guid userId)
+        {
+            var results = await _unitOfWork.CompletedTaskRepository.GetByUserAsync(userId);
+            return results.Select(_mapper.Map<CompletedTaskDto>).ToList();
         }
 
-        public async Task<CompletedTaskDTO> GetOneAsync(Guid id)
+        public async Task<CompletedTaskDto> GetOneAsync(Guid id)
         {
             var result = await _unitOfWork.CompletedTaskRepository.GetOneAsync(id);
-            return _mapper.Map<CompletedTaskDTO>(result);
+            return _mapper.Map<CompletedTaskDto>(result);
         }
 
-        public async Task UpdateAsync(CompletedTaskDTO model)
+        public async Task UpdateAsync(CompletedTaskDto model)
         {
             await _unitOfWork.CompletedTaskRepository.UpdateAsync(_mapper.Map<CompletedTask>(model));
             await _unitOfWork.SaveAllAsync();
@@ -46,7 +51,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAllAsync();
         }
 
-        public async Task CreateAsync(CompletedTaskDTO model)
+        public async Task CreateAsync(CompletedTaskDto model)
         {
             await _unitOfWork.CompletedTaskRepository.CreateAsync(_mapper.Map<CompletedTask>(model));
             await _unitOfWork.SaveAllAsync();

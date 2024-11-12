@@ -17,14 +17,14 @@ namespace SecurityTestingAPI.Controllers
 
         // GET: api/Complexities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ComplexityDTO>>> GetComplexities()
+        public async Task<ActionResult<IEnumerable<ComplexityDto>>> GetComplexities()
         {
             return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/Complexities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ComplexityDTO>> GetComplexity(Guid id)
+        public async Task<ActionResult<ComplexityDto>> GetComplexity(Guid id)
         {
             return Ok(await _service.GetOneAsync(id));
         }
@@ -32,7 +32,7 @@ namespace SecurityTestingAPI.Controllers
         // PUT: api/Complexities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComplexity(Guid id, ComplexityDTO complexity)
+        public async Task<IActionResult> PutComplexity(Guid id, ComplexityDto complexity)
         {
             if (id != complexity.Id)
             {
@@ -47,7 +47,7 @@ namespace SecurityTestingAPI.Controllers
         // POST: api/Complexities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ComplexityDTO>> PostComplexity(ComplexityDTO complexity)
+        public async Task<ActionResult<ComplexityDto>> PostComplexity(ComplexityDto complexity)
         {
             await _service.CreateAsync(complexity);
 

@@ -8,15 +8,15 @@ namespace BLL
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDTO>()
+            CreateMap<User, UserDto>()
                 .ForMember(dest => dest.Roles, opt => opt.MapFrom(e => e.Roles.Select(r => r.Id)));
-            CreateMap<Complexity, ComplexityDTO>()
+            CreateMap<Complexity, ComplexityDto>()
                 .ReverseMap();
-            CreateMap<TaskType, TaskTypeDTO>()
+            CreateMap<TaskType, TaskTypeDto>()
                 .ReverseMap();
-            CreateMap<TestTask, TestTaskDTO>()
+            CreateMap<TestTask, TestTaskDto>()
                 .ReverseMap();
-            CreateMap<CompletedTask, CompletedTaskDTO>()
+            CreateMap<CompletedTask, CompletedTaskDto>()
                 .ReverseMap();
         }
     }

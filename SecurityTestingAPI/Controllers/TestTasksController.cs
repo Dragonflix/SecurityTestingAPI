@@ -22,14 +22,14 @@ namespace SecurityTestingAPI.Controllers
         // GET: api/TestTasks
         [Authorize(Roles = "Student")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TestTaskDTO>>> GetTestTasks()
+        public async Task<ActionResult<IEnumerable<TestTaskDto>>> GetTestTasks(FilterModel filterModel)
         {
-            return Ok(await _service.GetAllAsync());
+            return Ok(await _service.GetAllAsync(filterModel));
         }
 
         // GET: api/TestTasks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TestTaskDTO>> GetTestTask(Guid id)
+        public async Task<ActionResult<TestTaskDto>> GetTestTask(Guid id)
         {
             return Ok(await _service.GetOneAsync(id));
         }
@@ -38,7 +38,7 @@ namespace SecurityTestingAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Moderator")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTestTask(Guid id, TestTaskDTO testTask)
+        public async Task<IActionResult> PutTestTask(Guid id, TestTaskDto testTask)
         {
             if (id != testTask.Id)
             {
@@ -54,7 +54,7 @@ namespace SecurityTestingAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(Roles = "Moderator")]
-        public async Task<ActionResult<TestTaskDTO>> PostTestTask(TestTaskDTO testTask)
+        public async Task<ActionResult<TestTaskDto>> PostTestTask(TestTaskDto testTask)
         {
             await _service.CreateAsync(testTask);
 

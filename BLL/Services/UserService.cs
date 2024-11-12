@@ -29,19 +29,19 @@ namespace BLL.Services
             _configuration = configuration;
         }
 
-        public async Task<ICollection<UserDTO>> GetAllAsync()
+        public async Task<ICollection<UserDto>> GetAllAsync()
         {
             var results = await _unitOfWork.UserRepository.GetAllAsync();
-            return results.Select(_mapper.Map<UserDTO>).ToList();
+            return results.Select(_mapper.Map<UserDto>).ToList();
         }
 
-        public async Task<UserDTO> GetOneAsync(Guid id)
+        public async Task<UserDto> GetOneAsync(Guid id)
         {
             var result = await _unitOfWork.UserRepository.GetOneAsync(id);
-            return _mapper.Map<UserDTO>(result);
+            return _mapper.Map<UserDto>(result);
         }
 
-        public async Task UpdateAsync(UserDTO model)
+        public async Task UpdateAsync(UserDto model)
         {
             MD5 md5 = MD5.Create();
             byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes(model.Password);
@@ -64,7 +64,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAllAsync();
         }
 
-        public async Task CreateAsync(UserDTO model)
+        public async Task CreateAsync(UserDto model)
         {
             MD5 md5 = MD5.Create();
             byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes(model.Password);

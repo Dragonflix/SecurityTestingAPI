@@ -21,19 +21,29 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<ICollection<TestTaskDTO>> GetAllAsync()
+        public async Task<ICollection<TestTaskDto>> GetAllAsync(FilterModel filterModel)
         {
-            var results = await _unitOfWork.TaskTypeRepository.GetAllAsync();
-            return results.Select(_mapper.Map<TestTaskDTO>).ToList();
+            var results = await _unitOfWork.TestTaskRepository.GetAllAsync();
+
+            if (filterModel.ComplexityIds != null && filterModel.ComplexityIds.Any())
+            {
+                results = results.Where(r => filterModel.ComplexityIds.Contains(r.ComplexityId)).ToList();
+            }
+            if (filterModel.TaskTypeIdIds != null && filterModel.TaskTypeIdIds.Any())
+            {
+                results = results.Where(r => filterModel.TaskTypeIdIds.Contains(r.TypeId)).ToList();
+            }
+
+            return results.Select(_mapper.Map<TestTaskDto>).ToList();
         }
 
-        public async Task<TestTaskDTO> GetOneAsync(Guid id)
+        public async Task<TestTaskDto> GetOneAsync(Guid id)
         {
-            var result = await _unitOfWork.TaskTypeRepository.GetOneAsync(id);
-            return _mapper.Map<TestTaskDTO>(result);
+            var result = await _unitOfWork.TestTaskRepository.GetOneAsync(id);
+            return _mapper.Map<TestTaskDto>(result);
         }
 
-        public async Task UpdateAsync(TestTaskDTO model)
+        public async Task UpdateAsync(TestTaskDto model)
         {
             await _unitOfWork.TestTaskRepository.UpdateAsync(_mapper.Map<TestTask>(model));
             await _unitOfWork.SaveAllAsync();
@@ -45,7 +55,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAllAsync();
         }
 
-        public async Task CreateAsync(TestTaskDTO model)
+        public async Task CreateAsync(TestTaskDto model)
         {
             await _unitOfWork.TestTaskRepository.CreateAsync(_mapper.Map<TestTask>(model));
             await _unitOfWork.SaveAllAsync();

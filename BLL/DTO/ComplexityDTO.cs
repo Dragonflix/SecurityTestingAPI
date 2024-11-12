@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
-    public class ComplexityDTO
+    public class ComplexityDto
     {
         public Guid Id { get; set; }
 

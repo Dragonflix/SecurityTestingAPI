@@ -16,14 +16,14 @@ namespace SecurityTestingAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             return Ok(await _service.GetAllAsync());
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(Guid id)
+        public async Task<ActionResult<UserDto>> GetUser(Guid id)
         {
             return Ok(await _service.GetOneAsync(id));
         }
@@ -31,7 +31,7 @@ namespace SecurityTestingAPI.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, UserDTO user)
+        public async Task<IActionResult> PutUser(Guid id, UserDto user)
         {
             if (id != user.Id)
             {
@@ -46,7 +46,7 @@ namespace SecurityTestingAPI.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> PostUser(UserDTO user)
+        public async Task<ActionResult<UserDto>> PostUser(UserDto user)
         {
             await _service.CreateAsync(user);
 
@@ -62,7 +62,7 @@ namespace SecurityTestingAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet]
+        [HttpGet("Authorize")]
         public async Task<ActionResult<string>> Authorize(string userName, string password)
         {
             try

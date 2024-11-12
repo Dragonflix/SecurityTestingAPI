@@ -17,6 +17,11 @@ namespace DAL.Repositories
             return await _dbContext.CompletedTasks.ToListAsync();
         }
 
+        public async Task<ICollection<CompletedTask>> GetByUserAsync(Guid userId)
+        {
+            return await _dbContext.CompletedTasks.Where(e => e.UserId == userId).ToListAsync();
+        }
+
         public async Task<CompletedTask> GetOneAsync(Guid id)
         {
             return await _dbContext.CompletedTasks.FirstOrDefaultAsync(e => e.Id == id);
