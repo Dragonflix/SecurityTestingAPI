@@ -46,6 +46,15 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder => builder
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<TestingDBContext>(options =>
 {
@@ -88,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
