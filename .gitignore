@@ -3,4 +3,11 @@
 ################################################################################
 
 /.vs
-
+/SecurityTestingAPI/bin
+/SecurityTestingAPI/obj
+/BLL/obj
+/BLL/bin
+/DAL/obj
+/DAL/bin
+/SecurityTestingTests/bin
+/SecurityTestingTests/obj
