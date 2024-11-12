@@ -7,3 +7,7 @@
 /SecurityTestingAPI/obj
 /BLL/obj
 /DAL/obj
+/BLL/bin/Debug/net8.0
+/SecurityTestingTests/bin/Debug/net8.0
+/SecurityTestingTests/obj/Debug/net8.0
+/SecurityTestingTests/obj
