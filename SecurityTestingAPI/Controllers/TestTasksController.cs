@@ -20,8 +20,8 @@ namespace SecurityTestingAPI.Controllers
         }
 
         // GET: api/TestTasks
-        [Authorize(Roles = "Student")]
-        [HttpGet]
+        [Authorize]
+        [HttpPost("GetAllFiltered")]
         public async Task<ActionResult<IEnumerable<TestTaskDto>>> GetTestTasks(FilterModel filterModel)
         {
             return Ok(await _service.GetAllAsync(filterModel));
@@ -58,7 +58,7 @@ namespace SecurityTestingAPI.Controllers
         {
             await _service.CreateAsync(testTask);
 
-            return CreatedAtAction("GetTestTask", new { id = testTask.Id }, testTask);
+            return Ok(testTask);
         }
 
         // DELETE: api/TestTasks/5

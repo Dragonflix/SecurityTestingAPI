@@ -52,7 +52,7 @@ namespace SecurityTestingAPI.Controllers
         {
             await _service.CreateAsync(taskType);
 
-            return CreatedAtAction("GetTestTask", new { id = taskType.Id }, taskType);
+            return Ok(taskType);
         }
 
         // DELETE: api/TaskTypes/5

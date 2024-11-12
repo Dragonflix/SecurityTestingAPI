@@ -50,7 +50,7 @@ namespace SecurityTestingAPI.Controllers
         {
             await _service.CreateAsync(user);
 
-            return CreatedAtAction("GetTestTask", new { id = user.Id }, user);
+            return Ok(user);
         }
 
         // DELETE: api/Users/5
