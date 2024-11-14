@@ -23,9 +23,9 @@ namespace SecurityTestingAPI.Controllers
 
         // GET: api/CompletedTasks/5
         [HttpGet("GetByUser/{id}")]
-        public async Task<ActionResult<IEnumerable<CompletedTaskDto>>> GetCompletedTaskByUser(Guid userId)
+        public async Task<ActionResult<IEnumerable<CompletedTaskDto>>> GetCompletedTaskByUser(Guid id)
         {
-            return Ok(await _service.GetOneAsync(userId));
+            return Ok(await _service.GetByUserAsync(id));
         }
 
         // GET: api/CompletedTasks/5
